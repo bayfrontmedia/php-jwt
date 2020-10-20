@@ -1,0 +1,39 @@
+{
+  "name": "bayfrontmedia/php-jwt",
+  "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP, conforming to RFC 7519.",
+  "homepage": "https://github.com/bayfrontmedia/php-jwt",
+  "license" : "MIT",
+  "version": "1.0.0",
+  "type": "library",
+  "keywords": [
+    "php",
+    "jwt",
+    "token",
+    "json",
+    "encode",
+    "decode"
+  ],
+  "authors": [
+    {
+      "name": "John Robinson",
+      "email": "john@bayfrontmedia.com",
+      "homepage": "https://www.bayfrontmedia.com",
+      "role": "Developer"
+    }
+  ],
+  "funding": [
+    {
+      "type": "patreon",
+      "url": "https://www.patreon.com/bayfrontmedia"
+    }
+  ],
+  "require": {
+    "php": ">=7.1.0",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Bayfront\\JWT\\": "src/"
+    }
+  }
+}
