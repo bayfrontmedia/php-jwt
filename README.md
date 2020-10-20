@@ -116,13 +116,13 @@ Returns current header array.
 
 - (array)
 
-<hr />
-
 **Example:**
 
 ```
 print_r($jwt->getHeader());
 ```
+
+<hr />
 
 ### setHeader
 
@@ -132,7 +132,7 @@ Set custom value(s) to the current header array.
 
 **Parameters:**
 
-- `$header` (array): Key / value pairs to set to the header array
+- `$header` (array): Key/value pairs to set to the header array
 
 **Returns:**
 
@@ -202,7 +202,7 @@ Set custom value(s) to the current payload array.
 
 **Parameters:**
 
-- `$payload` (array): Key / value pairs to set to the payload array
+- `$payload` (array): Key/value pairs to set to the payload array
 
 **Returns:**
 
@@ -358,7 +358,7 @@ Set subject.
 
 **Description:**
 
-Encode and return a JWT.
+Encode and return a signed JWT.
 
 **Parameters:**
 
@@ -391,7 +391,10 @@ $token = $jwt->iss('API key whose secret signs the token')
 Decode a JWT.
 
 This method verifies the token is valid by validating its structure (three segments separated by dots) and signature.
+
 The claims "iat", "nbf" and "exp" will be validated, if existing.
+
+The returned array will contain the keys `header` and `payload`.
 
 **Parameters:**
 

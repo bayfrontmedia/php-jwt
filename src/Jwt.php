@@ -306,7 +306,7 @@ class Jwt
      */
 
     /**
-     * Encode and return a JWT.
+     * Encode and return a signed JWT.
      *
      * @param array $payload
      *
@@ -342,6 +342,8 @@ class Jwt
      *
      * The claims "iat", "nbf" and "exp" will be validated, if existing.
      *
+     * The returned array will contain the keys "header" and "payload".
+     *
      * @param string $jwt
      *
      * @return array
@@ -354,12 +356,16 @@ class Jwt
 
         $jwt = explode('.', $jwt);
 
+        // Validate structure
+
         if (count($jwt) !== 3) {
-            throw new TokenException('Invalid JWT structure');
+            throw new TokenException('Invalid structure');
         }
 
+        // Validate signature
+
         if ($jwt[2] != $this->_base64UrlEncode($this->_sign($jwt[0] . '.' . $jwt[1]))) {
-            throw new TokenException('Invalid JWT signature');
+            throw new TokenException('Invalid signature');
         }
 
         $payload = json_decode($this->_base64UrlDecode($jwt[1]), true);
