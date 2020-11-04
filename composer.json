@@ -3,7 +3,6 @@
   "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP, conforming to RFC 7519.",
   "homepage": "https://github.com/bayfrontmedia/php-jwt",
   "license" : "MIT",
-  "version": "1.0.0",
   "type": "library",
   "keywords": [
     "php",

@@ -354,7 +354,12 @@ class Jwt
     public function decode(string $jwt): array
     {
 
-        $jwt = explode('.', $jwt);
+        /*
+         * Remove "Bearer " from beginning of string in case
+         * the entire Authorization header was used.
+         */
+
+        $jwt = explode('.', str_replace('Bearer ', '', $jwt));
 
         // Validate structure
 
