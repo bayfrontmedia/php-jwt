@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities
 
+## [1.0.1] - 2020.11.04
+
+### Added
+
+- Added removal of "Bearer " from beginning of `$jwt` string passed to the `decode` method in case the entire `Authorization` header was used.
+
 ## [1.0.0] - 2020.10.19
 
 ### Added

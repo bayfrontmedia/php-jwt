@@ -398,7 +398,7 @@ The returned array will contain the keys `header` and `payload`.
 
 **Parameters:**
 
-- `$jwt` (string)
+- `$jwt` (string): The JWT itself or the entire `Authorization` header can be used
 
 **Returns:**
 
