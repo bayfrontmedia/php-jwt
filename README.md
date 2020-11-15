@@ -448,7 +448,7 @@ Validate signature.
 ```
 try {
 
-    $decoded = $jwt->validateSignature('encoded.jwt');
+    $decoded = $jwt->validateSignature('encoded.jwt')->decode('encoded.jwt', false);
 
 } catch (TokenException $e) {
     die($e->getMessage());
@@ -480,7 +480,7 @@ Validate the claims "iat", "nbf" and "exp", if existing.
 ```
 try {
 
-    $decoded = $jwt->validateClaims('encoded.jwt');
+    $decoded = $jwt->validateClaims('encoded.jwt')->decode('encoded.jwt', false);
 
 } catch (TokenException $e) {
     die($e->getMessage());
