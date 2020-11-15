@@ -212,6 +212,7 @@ class Jwt
     public function aud(string $aud): self
     {
         $this->payload['aud'] = $aud;
+
         return $this;
     }
 
@@ -226,6 +227,7 @@ class Jwt
     public function exp(int $exp): self
     {
         $this->payload['exp'] = $exp;
+
         return $this;
     }
 
@@ -240,6 +242,7 @@ class Jwt
     public function iat(int $iat): self
     {
         $this->payload['iat'] = $iat;
+
         return $this;
     }
 
@@ -254,6 +257,7 @@ class Jwt
     public function iss(string $iss): self
     {
         $this->payload['iss'] = $iss;
+
         return $this;
     }
 
@@ -268,6 +272,7 @@ class Jwt
     public function jti(string $jti): self
     {
         $this->payload['jti'] = $jti;
+
         return $this;
     }
 
@@ -282,6 +287,7 @@ class Jwt
     public function nbf(int $nbf): self
     {
         $this->payload['nbf'] = $nbf;
+
         return $this;
     }
 
@@ -296,6 +302,7 @@ class Jwt
     public function sub(string $sub): self
     {
         $this->payload['sub'] = $sub;
+
         return $this;
     }
 
@@ -335,14 +342,15 @@ class Jwt
     }
 
     /**
-     * Decode a JWT.
+     * Removes "Bearer " from beginning of the string in case the entire
+     * Authorization header was used, and ensure the JWT is composed of
+     * 3 elements separated by "."
      *
-     * This method verifies the token is valid by validating its structure (three segments separated by dots) and
-     * signature.
+     * Returns array of JWT elements.
      *
-     * The claims "iat", "nbf" and "exp" will be validated, if existing.
-     *
-     * The returned array will contain the keys "header" and "payload".
+     * header
+     * payload
+     * signature
      *
      * @param string $jwt
      *
@@ -351,7 +359,7 @@ class Jwt
      * @throws TokenException
      */
 
-    public function decode(string $jwt): array
+    protected function _tokenToArray(string $jwt): array
     {
 
         /*
@@ -367,13 +375,91 @@ class Jwt
             throw new TokenException('Invalid structure');
         }
 
-        // Validate signature
+        return [
+            'header' => $jwt[0],
+            'payload' => $jwt[1],
+            'signature' => $jwt[2]
+        ];
 
-        if ($jwt[2] != $this->_base64UrlEncode($this->_sign($jwt[0] . '.' . $jwt[1]))) {
+    }
+
+    /**
+     * Decode a JWT.
+     *
+     * This method validates the token structure as three segments separated by dots.
+     *
+     * The returned array will contain the keys "header", "payload" and "signature".
+     *
+     * If $validate = true, the signature and claims will also be validated.
+     *
+     * @param string $jwt (The JWT itself or the entire `Authorization` header can be used)
+     * @param bool $validate (Validate signature and claims)
+     *
+     * @return array
+     *
+     * @throws TokenException
+     */
+
+    public function decode(string $jwt, bool $validate = true): array
+    {
+
+        if (true === $validate) {
+
+            $this->validateSignature($jwt);
+
+            $this->validateClaims($jwt);
+
+        }
+
+        $jwt = $this->_tokenToArray($jwt);
+
+        return [
+            'header' => json_decode($this->_base64UrlDecode($jwt['header']), true),
+            'payload' => json_decode($this->_base64UrlDecode($jwt['payload']), true),
+            'signature' => $jwt['signature']
+        ];
+
+    }
+
+    /**
+     * Validate signature.
+     *
+     * @param string $jwt
+     *
+     * @return self
+     *
+     * @throws TokenException
+     */
+
+    public function validateSignature(string $jwt): self
+    {
+
+        $jwt = $this->_tokenToArray($jwt);
+
+        if ($jwt['signature'] != $this->_base64UrlEncode($this->_sign($jwt['header'] . '.' . $jwt['payload']))) {
             throw new TokenException('Invalid signature');
         }
 
-        $payload = json_decode($this->_base64UrlDecode($jwt[1]), true);
+        return $this;
+
+    }
+
+    /**
+     * Validate the claims "iat", "nbf" and "exp", if existing.
+     *
+     * @param string $jwt
+     *
+     * @return self
+     *
+     * @throws TokenException
+     */
+
+    public function validateClaims(string $jwt): self
+    {
+
+        $jwt = $this->_tokenToArray($jwt);
+
+        $payload = json_decode($this->_base64UrlDecode($jwt['payload']), true);
 
         // Validate iat
 
@@ -393,10 +479,7 @@ class Jwt
             throw new TokenException('Invalid exp claim');
         }
 
-        return [
-            'header' => json_decode($this->_base64UrlDecode($jwt[0]), true),
-            'payload' => $payload
-        ];
+        return $this;
 
     }
 

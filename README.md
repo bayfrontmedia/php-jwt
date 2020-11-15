@@ -63,6 +63,8 @@ $jwt = new Jwt($secret);
 - [sub](#sub)
 - [encode](#encode)
 - [decode](#decode)
+- [validateSignature](#validatesignature)
+- [validateClaims](#validateclaims)
 
 <hr />
 
@@ -390,15 +392,16 @@ $token = $jwt->iss('API key whose secret signs the token')
 
 Decode a JWT.
 
-This method verifies the token is valid by validating its structure (three segments separated by dots) and signature.
+This method validates the token structure as three segments separated by dots.
 
-The claims "iat", "nbf" and "exp" will be validated, if existing.
+The returned array will contain the keys `header`, `payload` and `signature`.
 
-The returned array will contain the keys `header` and `payload`.
+If `$validate = true`, the signature and claims will also be validated.
 
 **Parameters:**
 
 - `$jwt` (string): The JWT itself or the entire `Authorization` header can be used
+- `$validate = true` (bool): Validate signature and claims
 
 **Returns:**
 
@@ -419,3 +422,69 @@ try {
     die($e->getMessage());
 }
 ```
+
+<hr />
+
+### validateSignature
+
+**Description:**
+
+Validate signature.
+
+**Parameters:**
+
+- `$jwt` (string): The JWT itself or the entire `Authorization` header can be used
+
+**Returns:**
+
+- (self)
+
+**Throws:**
+
+- `Bayfront\JWT\TokenException`
+
+**Example:**
+
+```
+try {
+
+    $decoded = $jwt->validateSignature('encoded.jwt');
+
+} catch (TokenException $e) {
+    die($e->getMessage());
+}
+```
+
+<hr />
+
+### validateClaims
+
+**Description:**
+
+Validate the claims "iat", "nbf" and "exp", if existing.
+
+**Parameters:**
+
+- `$jwt` (string): The JWT itself or the entire `Authorization` header can be used
+
+**Returns:**
+
+- (self)
+
+**Throws:**
+
+- `Bayfront\JWT\TokenException`
+
+**Example:**
+
+```
+try {
+
+    $decoded = $jwt->validateClaims('encoded.jwt');
+
+} catch (TokenException $e) {
+    die($e->getMessage());
+}
+```
+
+<hr />

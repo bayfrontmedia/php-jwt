@@ -12,6 +12,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities
 
+## [1.1.0] - 2020.11.15
+
+### Added
+
+- Added the ability to optionally validate signature and claims using the `decode` method.
+This is useful as it allows the contents of the JWT to be returned, even if it is invalid or expired.
+
+- Added the methods `validateSignature` and `validateClaims`.
+
 ## [1.0.1] - 2020.11.04
 
 ### Added
