@@ -461,15 +461,20 @@ class Jwt
 
         $payload = json_decode($this->_base64UrlDecode($jwt['payload']), true);
 
+        /*
+         * Allow a 10 second window for validating "iat" and "nbf"
+         * to account for time drift.
+         */
+
         // Validate iat
 
-        if (isset($payload['iat']) && $payload['iat'] > time()) {
+        if (isset($payload['iat']) && $payload['iat'] > time() - 10) {
             throw new TokenException('Invalid iat claim');
         }
 
         // Validate nbf
 
-        if (isset($payload['nbf']) && $payload['nbf'] > time()) {
+        if (isset($payload['nbf']) && $payload['nbf'] > time() - 10) {
             throw new TokenException('Invalid nbf claim');
         }
 

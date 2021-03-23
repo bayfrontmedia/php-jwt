@@ -12,6 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities
 
+## [1.1.1] - 2021.03.23
+
+### Fixed
+
+- Fixed bug where `iat` and `nbf` claims were not validating due to time drift.
+Validation now allows a window of 10 seconds.
+
 ## [1.1.0] - 2020.11.15
 
 ### Added
