@@ -468,13 +468,13 @@ class Jwt
 
         // Validate iat
 
-        if (isset($payload['iat']) && $payload['iat'] > time() - 10) {
+        if (isset($payload['iat']) && $payload['iat'] > time() + 10) {
             throw new TokenException('Invalid iat claim');
         }
 
         // Validate nbf
 
-        if (isset($payload['nbf']) && $payload['nbf'] > time() - 10) {
+        if (isset($payload['nbf']) && $payload['nbf'] > time() + 10) {
             throw new TokenException('Invalid nbf claim');
         }
 
