@@ -1,12 +1,5 @@
 <?php
 
-/**
- * @package php-jwt
- * @link https://github.com/bayfrontmedia/php-jwt
- * @author John Robinson <john@bayfrontmedia.com>
- * @copyright 2020 Bayfront Media
- */
-
 namespace Bayfront\JWT;
 
 use Exception;
@@ -14,7 +7,7 @@ use Exception;
 class Jwt
 {
 
-    protected $secret;
+    protected string $secret;
 
     public function __construct(string $secret)
     {
@@ -86,7 +79,7 @@ class Jwt
      * ############################################################
      */
 
-    protected $header = [
+    protected array $header = [
         'typ' => 'JWT',
         'alg' => 'HS256'
     ];
@@ -148,7 +141,7 @@ class Jwt
      * ############################################################
      */
 
-    protected $payload = [];
+    protected array $payload = [];
 
     /**
      * Returns current payload array.
@@ -462,7 +455,7 @@ class Jwt
         $payload = json_decode($this->_base64UrlDecode($jwt['payload']), true);
 
         /*
-         * Allow a 10 second window for validating "iat" and "nbf"
+         * Allow a 10-second window for validating "iat" and "nbf"
          * to account for time drift.
          */
 
